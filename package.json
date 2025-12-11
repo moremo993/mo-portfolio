@@ -1,0 +1,30 @@
+{
+  "name": "horizon-hero-prototype",
+  "version": "1.0.0",
+  "description": "Ultra-Premium Cinematic Hero Section Prototype for Mohamed ElSaadawey's Portfolio",
+  "main": "index.html",
+  "scripts": {
+    "start": "serve .",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "three": "^0.128.0",
+    "gsap": "^3.11.4"
+  },
+  "devDependencies": {
+    "vite": "^4.0.0",
+    "serve": "^14.2.0"
+  },
+  "keywords": [
+    "portfolio",
+    "hero-section",
+    "cinematic",
+    "three.js",
+    "gsap",
+    "glassmorphism"
+  ],
+  "author": "Mohamed ElSaadawey",
+  "license": "MIT"
+}

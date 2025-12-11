@@ -1,0 +1,126 @@
+/* Global Base Styles - Ultra-Premium Cinematic Design */
+
+:root {
+    /* Color Palette - Deep Charcoal & Warm Blacks with Cyan/Gold Accents */
+    --color-deep-charcoal: #0a0e27;
+    --color-warm-black: #111111;
+    --color-soft-black: #1a1a1a;
+    --color-cyan-accent: #00d4ff;
+    --color-gold-accent: #ffd700;
+    --color-cyan-glow: rgba(0, 212, 255, 0.15);
+    --color-gold-glow: rgba(255, 215, 0, 0.1);
+    
+    /* Typography */
+    --font-heading: 'Playfair Display', serif;
+    --font-body: 'Inter', sans-serif;
+    --font-ui: 'Montserrat', sans-serif;
+    
+    /* Spacing & Sizing */
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 2rem;
+    --spacing-xl: 3rem;
+    --spacing-xxl: 4rem;
+    
+    /* Transitions & Animations */
+    --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    /* Effects */
+    --backdrop-blur: 12px;
+    --grain-opacity: 0.03;
+}
+
+/* Base Reset & Typography */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    font-family: var(--font-body);
+    background-color: var(--color-deep-charcoal);
+    color: white;
+    line-height: 1.6;
+    overflow-x: hidden;
+    min-height: 100vh;
+    position: relative;
+}
+
+/* Premium Grain Texture Overlay */
+body::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.02) 1px, transparent 0),
+        radial-gradient(circle at 1px 1px, rgba(0, 212, 255, 0.01) 1px, transparent 0);
+    background-size: 20px 20px;
+    opacity: var(--grain-opacity);
+    pointer-events: none;
+    z-index: 1000;
+}
+
+/* Typography Hierarchy */
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    font-weight: 400;
+    line-height: 1.2;
+    letter-spacing: 0.5px;
+}
+
+h1 {
+    font-size: clamp(3rem, 8vw, 8rem);
+    font-weight: 300;
+}
+
+h2 {
+    font-size: clamp(2rem, 6vw, 4rem);
+    font-weight: 300;
+}
+
+h3 {
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    font-weight: 400;
+}
+
+p {
+    font-size: 1rem;
+    font-weight: 300;
+    opacity: 0.9;
+}
+
+/* Utility Classes */
+.container {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-lg);
+}
+
+.section {
+    padding: var(--spacing-xxl) 0;
+}
+
+/* Responsive Base */
+@media (max-width: 768px) {
+    :root {
+        --grain-opacity: 0.02;
+    }
+    
+    body {
+        font-size: 14px;
+    }
+}
