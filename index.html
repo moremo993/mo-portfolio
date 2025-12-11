@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Horizon | Where Vision Meets Reality</title>
+    <meta name="description" content="Mohamed ElSaadawey's Portfolio - Ultra-Premium Cinematic Hero Section">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/glass-morphism.css">
+    <link rel="stylesheet" href="css/hero.css">
+    <link rel="stylesheet" href="css/animations.css">
+    
+    <style>
+        /* Critical CSS for initial load */
+        body {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0e27;
+            color: white;
+        }
+        
+        .hero-section {
+            height: 100vh;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .three-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+    <!-- Premium Glassmorphism Navbar -->
+    <nav class="glass-navbar">
+        <div class="nav-container">
+            <div class="nav-logo">HORIZON</div>
+            <ul class="nav-links">
+                <li><a href="#work" class="nav-link">Work</a></li>
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="#services" class="nav-link">Services</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <!-- Three.js Canvas -->
+        <canvas class="three-canvas" id="hero-canvas"></canvas>
+        
+        <!-- Hero Content -->
+        <div class="hero-content">
+            <h1 class="hero-title">
+                <span class="hero-letter">H</span>
+                <span class="hero-letter">O</span>
+                <span class="hero-letter">R</span>
+                <span class="hero-letter">I</span>
+                <span class="hero-letter">Z</span>
+                <span class="hero-letter">O</span>
+                <span class="hero-letter">N</span>
+            </h1>
+            <p class="hero-subtitle">Where vision meets reality</p>
+        </div>
+        
+        <!-- Scroll Hint -->
+        <div class="scroll-hint">
+            <div class="scroll-cursor"></div>
+            <span class="scroll-text">Scroll to explore</span>
+        </div>
+    </section>
+    
+    <!-- JavaScript Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
+    
+    <!-- JavaScript Modules -->
+    <script src="js/three-init.js"></script>
+    <script src="js/gsap-scroll.js"></script>
+    <script src="js/hero-cinema.js"></script>
+    <script src="js/interactions.js"></script>
+</body>
+</html>

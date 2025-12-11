@@ -1,0 +1,97 @@
+/* GSAP Animations - Cinematic Weighted Easing */
+
+/* Text Glow Effects */
+.hero-title {
+    text-shadow: 
+        0 0 10px var(--color-cyan-glow),
+        0 0 20px var(--color-gold-glow);
+}
+
+.hero-subtitle {
+    text-shadow: 
+        0 0 5px var(--color-cyan-glow);
+}
+
+/* Hover Glow Effects */
+.hero-title:hover {
+    text-shadow: 
+        0 0 15px var(--color-cyan-glow),
+        0 0 30px var(--color-gold-glow);
+}
+
+.hero-subtitle:hover {
+    text-shadow: 
+        0 0 10px var(--color-cyan-glow);
+}
+
+/* Cinematic Easing Curves */
+:root {
+    --ease-cinematic-in: cubic-bezier(0.5, 0, 0.5, 1);
+    --ease-cinematic-out: cubic-bezier(0, 0, 0.2, 1);
+    --ease-cinematic-in-out: cubic-bezier(0.42, 0, 0.58, 1);
+    --ease-weighted: cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+/* Animation Classes for GSAP */
+.fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.fade-in.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.stagger-letter {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+.stagger-letter.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Scroll Trigger Animations */
+.scroll-animate {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all 1s var(--ease-cinematic-out);
+}
+
+.scroll-animate.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Premium Hover Effects */
+.premium-hover {
+    transition: all 0.3s var(--ease-weighted);
+}
+
+.premium-hover:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(0, 212, 255, 0.1);
+}
+
+/* Cinematic Camera Pull Back */
+.camera-pull-back {
+    transform: scale(1);
+    transition: transform 2s var(--ease-cinematic-out);
+}
+
+.camera-pull-back.active {
+    transform: scale(0.95);
+}
+
+/* Layer Reveal Animation */
+.layer-reveal {
+    clip-path: inset(0 100% 0 0);
+    transition: clip-path 1.5s var(--ease-cinematic-out);
+}
+
+.layer-reveal.active {
+    clip-path: inset(0 0 0 0);
+}
