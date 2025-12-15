@@ -1,19 +1,405 @@
-html,
-body {
-  padding: 0;
+/*
+ * TYPOGRAPHY-FIRST DESIGN SYSTEM
+ * ===============================
+ * A high-contrast, scroll-friendly design system with:
+ * - Fluid typography with clamped scales
+ * - Motion tokens with reduced-motion support
+ * - Utility classes for layout, backgrounds, and effects
+ * - Three.js canvas integration
+ */
+
+/* ============================================================================
+   CSS CUSTOM PROPERTIES (Design Tokens)
+   ============================================================================ */
+
+:root {
+  /* ─────────────────────────────────────────────────────────────────────────
+     COLOR PALETTE: High-contrast black/white + single accent
+     ───────────────────────────────────────────────────────────────────────── */
+  --color-black: #0a0a0a;
+  --color-black-soft: #1a1a1a;
+  --color-white: #fafafa;
+  --color-white-soft: #e5e5e5;
+  --color-accent: #00ff88;
+  --color-accent-dim: #00cc6d;
+  --color-gray: #666666;
+  --color-gray-light: #999999;
+  --color-gray-dark: #333333;
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     TYPOGRAPHY: Font families (set via next/font CSS variables)
+     ───────────────────────────────────────────────────────────────────────── */
+  --font-display: var(--font-display), -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: var(--font-body), -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     TYPOGRAPHY SCALE: Fluid, clamped font sizes
+     Min size @ 320px viewport, max size @ 1920px viewport
+     ───────────────────────────────────────────────────────────────────────── */
+  --font-size-display: clamp(3rem, 8vw + 1rem, 6rem);
+  --font-size-h1: clamp(2.5rem, 6vw + 1rem, 4.5rem);
+  --font-size-h2: clamp(2rem, 4vw + 0.5rem, 3.5rem);
+  --font-size-h3: clamp(1.5rem, 3vw + 0.5rem, 2.5rem);
+  --font-size-h4: clamp(1.25rem, 2vw + 0.25rem, 1.875rem);
+  --font-size-body: clamp(1rem, 0.5vw + 0.875rem, 1.125rem);
+  --font-size-small: clamp(0.875rem, 0.25vw + 0.75rem, 1rem);
+  --font-size-tiny: clamp(0.75rem, 0.25vw + 0.625rem, 0.875rem);
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     LETTER SPACING (Tracking)
+     ───────────────────────────────────────────────────────────────────────── */
+  --tracking-tight: -0.02em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.02em;
+  --tracking-wider: 0.05em;
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     LINE HEIGHT (Leading)
+     ───────────────────────────────────────────────────────────────────────── */
+  --leading-tight: 1.2;
+  --leading-snug: 1.375;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.625;
+  --leading-loose: 1.75;
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     SPACING SCALE: Consistent vertical/horizontal rhythm
+     ───────────────────────────────────────────────────────────────────────── */
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 2rem;
+  --space-lg: 4rem;
+  --space-xl: 6rem;
+  --space-2xl: 8rem;
+  --space-3xl: 12rem;
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     MOTION TOKENS: Animation durations and easing
+     ───────────────────────────────────────────────────────────────────────── */
+  --duration-instant: 100ms;
+  --duration-fast: 150ms;
+  --duration-base: 250ms;
+  --duration-slow: 400ms;
+  --duration-slower: 600ms;
+
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     LAYOUT: Container widths and column constraints
+     ───────────────────────────────────────────────────────────────────────── */
+  --container-max: 1440px;
+  --container-narrow: 960px;
+  --container-reading: 720px;
+  --container-padding: var(--space-md);
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     EFFECTS: Overlay opacity and visual treatments
+     ───────────────────────────────────────────────────────────────────────── */
+  --scanline-opacity: 0.05;
+  --jitter-intensity: 0.02;
+  --overlay-dark: rgba(10, 10, 10, 0.7);
+  --overlay-light: rgba(250, 250, 250, 0.9);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   REDUCED MOTION: Honor user preferences
+   Disable animations, transitions, and visual effects for accessibility
+   ───────────────────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-instant: 0ms;
+    --duration-fast: 0ms;
+    --duration-base: 0ms;
+    --duration-slow: 0ms;
+    --duration-slower: 0ms;
+    --scanline-opacity: 0;
+    --jitter-intensity: 0;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Disable visual effect overlays */
+  .scanline-overlay,
+  .jitter-overlay {
+    display: none !important;
+  }
+}
+
+/* ============================================================================
+   BASE STYLES: Reset and foundational elements
+   ============================================================================ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-  background: #0a0a0a;
-  color: white;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-body);
+  font-size: var(--font-size-body);
+  line-height: var(--leading-normal);
+  color: var(--color-white);
+  background: var(--color-black);
+  /* REMOVED: overflow: hidden - now scroll-friendly */
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+/* ============================================================================
+   TYPOGRAPHY UTILITIES: Reusable text treatments
+   ============================================================================ */
+
+/* Display: Largest, most impactful headlines */
+.text-display {
+  font-family: var(--font-display);
+  font-size: var(--font-size-display);
+  font-weight: 700;
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+}
+
+/* Headings: Hierarchical heading styles */
+.text-h1 {
+  font-family: var(--font-display);
+  font-size: var(--font-size-h1);
+  font-weight: 600;
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+}
+
+.text-h2 {
+  font-family: var(--font-display);
+  font-size: var(--font-size-h2);
+  font-weight: 600;
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-tight);
+}
+
+.text-h3 {
+  font-family: var(--font-display);
+  font-size: var(--font-size-h3);
+  font-weight: 500;
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-normal);
+}
+
+.text-h4 {
+  font-family: var(--font-display);
+  font-size: var(--font-size-h4);
+  font-weight: 500;
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-normal);
+}
+
+/* Body: Editorial text styles */
+.text-body {
+  font-family: var(--font-body);
+  font-size: var(--font-size-body);
+  font-weight: 400;
+  line-height: var(--leading-relaxed);
+  letter-spacing: var(--tracking-normal);
+}
+
+.text-body-large {
+  font-family: var(--font-body);
+  font-size: var(--font-size-h4);
+  font-weight: 300;
+  line-height: var(--leading-relaxed);
+  letter-spacing: var(--tracking-wide);
+}
+
+/* Small text: Captions, labels, metadata */
+.text-small {
+  font-family: var(--font-body);
+  font-size: var(--font-size-small);
+  font-weight: 400;
+  line-height: var(--leading-normal);
+  letter-spacing: var(--tracking-wide);
+}
+
+.text-tiny {
+  font-family: var(--font-body);
+  font-size: var(--font-size-tiny);
+  font-weight: 400;
+  line-height: var(--leading-normal);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+}
+
+/* Accent text: Highlighted or emphasized content */
+.text-accent {
+  color: var(--color-accent);
+}
+
+/* ============================================================================
+   LAYOUT UTILITIES: Container and column widths
+   ============================================================================ */
+
+/* Standard container: Max width with horizontal padding */
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--container-padding);
+  padding-right: var(--container-padding);
+}
+
+/* Narrow container: For focused content */
+.container-narrow {
+  width: 100%;
+  max-width: var(--container-narrow);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--container-padding);
+  padding-right: var(--container-padding);
+}
+
+/* Reading container: Optimal line length for body text */
+.container-reading {
+  width: 100%;
+  max-width: var(--container-reading);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--container-padding);
+  padding-right: var(--container-padding);
+}
+
+/* ============================================================================
+   SECTION BACKGROUNDS: Light and dark sections
+   ============================================================================ */
+
+/* Dark section: Default dark background */
+.section-dark {
+  background-color: var(--color-black);
+  color: var(--color-white);
+}
+
+/* Dark soft: Slightly lighter dark background */
+.section-dark-soft {
+  background-color: var(--color-black-soft);
+  color: var(--color-white);
+}
+
+/* Light section: High-contrast light background */
+.section-light {
+  background-color: var(--color-white);
+  color: var(--color-black);
+}
+
+/* Light soft: Slightly darker light background */
+.section-light-soft {
+  background-color: var(--color-white-soft);
+  color: var(--color-black);
+}
+
+/* Accent section: Highlight section with accent color */
+.section-accent {
+  background-color: var(--color-accent);
+  color: var(--color-black);
+}
+
+/* ============================================================================
+   VISUAL EFFECTS: Scanline and jitter overlays
+   ============================================================================ */
+
+/*
+ * Scanline overlay: Adds horizontal scanline effect
+ * Usage: Add to a section with position: relative
+ */
+.scanline-overlay {
+  position: relative;
   overflow: hidden;
 }
 
-* {
-  box-sizing: border-box;
+.scanline-overlay::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, var(--scanline-opacity)) 0px,
+    transparent 1px,
+    transparent 2px,
+    rgba(0, 0, 0, var(--scanline-opacity)) 3px
+  );
+  pointer-events: none;
+  z-index: 1;
 }
 
-/* Canvas container styles */
+/*
+ * Jitter overlay: Subtle animated distortion effect
+ * Usage: Add to a section with position: relative
+ */
+.jitter-overlay {
+  position: relative;
+  overflow: hidden;
+}
+
+.jitter-overlay::after {
+  content: '';
+  position: absolute;
+  top: -10%;
+  left: -10%;
+  width: 120%;
+  height: 120%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0, 255, 136, 0.05) 50%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+  animation: jitter 8s ease-in-out infinite;
+}
+
+@keyframes jitter {
+  0%, 100% {
+    transform: translate(0, 0) skew(0deg, 0deg);
+  }
+  25% {
+    transform: translate(calc(var(--jitter-intensity) * 10px), calc(var(--jitter-intensity) * 5px)) skew(0.2deg, 0.1deg);
+  }
+  50% {
+    transform: translate(calc(var(--jitter-intensity) * -8px), calc(var(--jitter-intensity) * 8px)) skew(-0.15deg, 0.15deg);
+  }
+  75% {
+    transform: translate(calc(var(--jitter-intensity) * 6px), calc(var(--jitter-intensity) * -6px)) skew(0.1deg, -0.1deg);
+  }
+}
+
+/* ============================================================================
+   THREE.JS CANVAS INTEGRATION: Preserve 3D rendering
+   ============================================================================ */
+
+/* Canvas container styles - maintains Three.js functionality */
 .story-engine-canvas {
   position: relative !important;
   width: 100% !important;
@@ -25,29 +411,31 @@ body {
   outline: none !important;
 }
 
-/* Hide scrollbars for full-screen experience */
-::-webkit-scrollbar {
-  display: none;
-}
-
-html {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
+/* ============================================================================
+   CONTROL PANEL STYLES: Demo and debug UI
+   ============================================================================ */
 
 /* Control panel animations */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .control-panel {
-  animation: fadeIn 0.3s ease-out;
+  animation: fadeIn var(--duration-base) var(--ease-out);
 }
 
-/* Button hover effects */
+/* Button styles with smooth interactions */
 button {
-  transition: all 0.2s ease-in-out;
+  transition: all var(--duration-fast) var(--ease-in-out);
+  font-family: var(--font-body);
+  cursor: pointer;
 }
 
 button:hover {
@@ -59,48 +447,78 @@ button:active {
   transform: translateY(0);
 }
 
-/* Input styles */
-input[type="range"] {
+/* Input range styles */
+input[type='range'] {
   -webkit-appearance: none;
   appearance: none;
   height: 4px;
   border-radius: 2px;
-  background: #333;
+  background: var(--color-gray-dark);
   outline: none;
+  transition: background var(--duration-fast) var(--ease-out);
 }
 
-input[type="range"]::-webkit-slider-thumb {
+input[type='range']:hover {
+  background: var(--color-gray);
+}
+
+input[type='range']::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  background: #4f9eff;
+  background: var(--color-accent);
   cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out);
 }
 
-input[type="range"]::-moz-range-thumb {
+input[type='range']::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 0 8px rgba(0, 255, 136, 0.1);
+}
+
+input[type='range']::-moz-range-thumb {
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  background: #4f9eff;
+  background: var(--color-accent);
   cursor: pointer;
   border: none;
+  transition: all var(--duration-fast) var(--ease-out);
 }
 
-/* Select styles */
+input[type='range']::-moz-range-thumb:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 0 8px rgba(0, 255, 136, 0.1);
+}
+
+/* Select dropdown styles */
 select {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
+  font-family: var(--font-body);
   background-image: url("data:image/svg+xml;charset=US-ASCII,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'><path fill='%23ffffff' d='M2 0L0 2h4zm0 5L0 3h4z'/></svg>");
   background-repeat: no-repeat;
   background-position: right 8px center;
   background-size: 12px;
+  transition: all var(--duration-fast) var(--ease-out);
 }
 
-/* Responsive design */
+select:hover {
+  background-color: var(--color-gray-dark);
+}
+
+/* ============================================================================
+   RESPONSIVE DESIGN: Mobile and tablet adjustments
+   ============================================================================ */
+
 @media (max-width: 768px) {
+  :root {
+    --container-padding: var(--space-sm);
+  }
+
   .control-panel {
     position: fixed !important;
     bottom: 0 !important;
@@ -112,3 +530,54 @@ select {
     border-radius: 8px 8px 0 0 !important;
   }
 }
+
+@media (max-width: 480px) {
+  :root {
+    --space-lg: 3rem;
+    --space-xl: 4rem;
+    --space-2xl: 5rem;
+  }
+}
+
+/* ============================================================================
+   UTILITY CLASSES: Spacing, display, and common patterns
+   ============================================================================ */
+
+/* Spacing utilities */
+.mt-xs { margin-top: var(--space-xs); }
+.mt-sm { margin-top: var(--space-sm); }
+.mt-md { margin-top: var(--space-md); }
+.mt-lg { margin-top: var(--space-lg); }
+.mt-xl { margin-top: var(--space-xl); }
+.mt-2xl { margin-top: var(--space-2xl); }
+
+.mb-xs { margin-bottom: var(--space-xs); }
+.mb-sm { margin-bottom: var(--space-sm); }
+.mb-md { margin-bottom: var(--space-md); }
+.mb-lg { margin-bottom: var(--space-lg); }
+.mb-xl { margin-bottom: var(--space-xl); }
+.mb-2xl { margin-bottom: var(--space-2xl); }
+
+.py-xs { padding-top: var(--space-xs); padding-bottom: var(--space-xs); }
+.py-sm { padding-top: var(--space-sm); padding-bottom: var(--space-sm); }
+.py-md { padding-top: var(--space-md); padding-bottom: var(--space-md); }
+.py-lg { padding-top: var(--space-lg); padding-bottom: var(--space-lg); }
+.py-xl { padding-top: var(--space-xl); padding-bottom: var(--space-xl); }
+.py-2xl { padding-top: var(--space-2xl); padding-bottom: var(--space-2xl); }
+
+/* Display utilities */
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.items-center { align-items: center; }
+.justify-center { justify-content: center; }
+.gap-sm { gap: var(--space-sm); }
+.gap-md { gap: var(--space-md); }
+.gap-lg { gap: var(--space-lg); }
+
+/* Text utilities */
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+.uppercase { text-transform: uppercase; }
+.lowercase { text-transform: lowercase; }
+.capitalize { text-transform: capitalize; }
