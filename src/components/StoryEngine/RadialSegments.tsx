@@ -145,7 +145,7 @@ export const RadialSegments: React.FC<RadialSegmentsProps> = ({ className }) => 
   , [segments, sceneConfig.separationDistance]);
 
   return (
-    <group className={className}>
+    <group>
       {segmentsWithDistance.map((segment) => (
         <RadialSegment key={segment.id} config={segment} />
       ))}

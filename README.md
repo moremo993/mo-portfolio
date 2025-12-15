@@ -1,10 +1,18 @@
-# Story Engine - React Three Fiber
+# Mo Portfolio - React Three Fiber
 
-A modular, state-driven React Three Fiber implementation featuring a central core ring with five radial segments representing Strategy, Storytelling, Content, Analytics, and Community.
+A modern portfolio website featuring a kinetic hero section and modular Story Engine built with React Three Fiber, GSAP, and Next.js.
 
 ## Features
 
-### Core Components
+### Hero Section
+- **Kinetic Typography**: GSAP-powered staggered character animations
+- **Three.js Text Geometry**: 3D text with custom scanline/jitter shaders
+- **Timeline Choreography**: Assembly → Disruption → Resolve sequence
+- **Reduced Motion Support**: Accessible fallbacks for motion-sensitive users
+- **Synchronized Animations**: DOM typography leads, Canvas follows
+- **No Infinite Loops**: All animations complete cleanly
+
+### Story Engine
 - **Central Core Ring**: Engineered torus topology with intentional negative space
 - **Five Radial Segments**: Strategy, Storytelling, Content, Analytics, Community
 - **Dynamic Lighting System**: Soft key, rim, and ambient lights with state-driven intensities
@@ -29,7 +37,21 @@ A modular, state-driven React Three Fiber implementation featuring a central cor
 
 ## Usage
 
-### Basic Implementation
+### Hero Section
+```jsx
+import { Hero } from '@/components/sections/Hero';
+
+function HomePage() {
+  return (
+    <Hero
+      headline="Build Stories That Matter"
+      subline="Strategy, storytelling, and technology converge"
+    />
+  );
+}
+```
+
+### Story Engine
 ```jsx
 import { StoryEngine } from '@/components/StoryEngine';
 
@@ -111,19 +133,30 @@ interface StoryEngineState {
 
 ```
 src/
-├── components/StoryEngine/
-│   ├── CoreRing.tsx          # Central core ring component
-│   ├── RadialSegments.tsx    # Five radial segments
-│   ├── LightingSystem.tsx    # Dynamic lighting system
-│   ├── StoryEngine.tsx       # Main component
-│   ├── materials.ts          # Material configurations
-│   └── index.ts              # Component exports
+├── components/
+│   ├── sections/
+│   │   └── Hero/
+│   │       ├── Hero.tsx              # Main Hero component
+│   │       ├── HeroCanvas.tsx        # Three.js 3D text
+│   │       ├── HeroTypography.tsx    # DOM typography animations
+│   │       ├── ScrollCue.tsx         # Scroll indicator
+│   │       ├── useHeroTimeline.ts    # Timeline hook
+│   │       ├── shaders.ts            # Scanline/jitter shaders
+│   │       ├── README.md             # Hero documentation
+│   │       └── index.ts              # Exports
+│   └── StoryEngine/
+│       ├── CoreRing.tsx          # Central core ring component
+│       ├── RadialSegments.tsx    # Five radial segments
+│       ├── LightingSystem.tsx    # Dynamic lighting system
+│       ├── StoryEngine.tsx       # Main component
+│       ├── materials.ts          # Material configurations
+│       └── index.ts              # Component exports
 ├── store/
 │   └── storyEngineStore.ts   # Zustand global state
 ├── hooks/
 │   └── useStoryEngine.ts     # Custom hook for state management
 ├── pages/
-│   ├── index.tsx             # Main application page
+│   ├── index.tsx             # Main application page with Hero
 │   ├── _app.tsx              # Next.js app component
 │   ├── demo.tsx              # Interactive demo with controls
 │   └── _document.tsx         # Document configuration

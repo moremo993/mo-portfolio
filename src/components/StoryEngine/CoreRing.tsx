@@ -68,7 +68,6 @@ export const CoreRing: React.FC<CoreRingProps> = ({ className }) => {
       position={coreRing.position}
       rotation={coreRing.rotation}
       scale={coreRing.scale}
-      className={className}
     >
       {/* Main core ring */}
       <mesh 

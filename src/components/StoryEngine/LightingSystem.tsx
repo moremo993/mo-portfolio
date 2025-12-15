@@ -50,12 +50,12 @@ export const LightingSystem: React.FC<LightingSystemProps> = ({ className }) => 
   };
 
   return (
-    <group className={className}>
+    <group>
       {/* Soft Key Light - primary illumination */}
       <directionalLight
         ref={keyLightRef}
-        position={lightPositions.keyLight.position}
-        target-position={lightPositions.keyLight.target}
+        position={lightPositions.keyLight.position as [number, number, number]}
+        target-position={lightPositions.keyLight.target as [number, number, number]}
         color={lighting.keyLightColor}
         intensity={lighting.keyLightIntensity}
         castShadow
@@ -72,8 +72,8 @@ export const LightingSystem: React.FC<LightingSystemProps> = ({ className }) => 
       {/* Rim Light - creates depth and highlights edges */}
       <directionalLight
         ref={rimLightRef}
-        position={lightPositions.rimLight.position}
-        target-position={lightPositions.rimLight.target}
+        position={lightPositions.rimLight.position as [number, number, number]}
+        target-position={lightPositions.rimLight.target as [number, number, number]}
         color={lighting.rimLightColor}
         intensity={lighting.rimLightIntensity}
         castShadow={false}
@@ -96,11 +96,11 @@ export const LightingSystem: React.FC<LightingSystemProps> = ({ className }) => 
       
       {/* Lighting state indicator (for debugging, hidden by default) */}
       <group visible={false}>
-        <mesh position={lightPositions.keyLight.position}>
+        <mesh position={lightPositions.keyLight.position as [number, number, number]}>
           <sphereGeometry args={[0.1, 8, 8]} />
           <meshBasicMaterial color={lighting.keyLightColor} />
         </mesh>
-        <mesh position={lightPositions.rimLight.position}>
+        <mesh position={lightPositions.rimLight.position as [number, number, number]}>
           <sphereGeometry args={[0.1, 8, 8]} />
           <meshBasicMaterial color={lighting.rimLightColor} />
         </mesh>
